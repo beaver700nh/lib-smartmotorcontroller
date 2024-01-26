@@ -2,10 +2,6 @@ package frc.robot.lib.SmartMotorController;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
-import com.ctre.phoenix.motorcontrol.IMotorController;
-
-import com.revrobotics.CANSparkBase;
-
 /**
  * Handles one side of a tank drive drive train.
  */
@@ -22,9 +18,13 @@ public class SmartMotorControllerGroup<T extends MotorController> {
    * @param accelUp The rate at which the motors should get faster. 
    * @param accelDown The rate at which the motors should get slower or change direction.
    * @param multiplier The master speed multiplier of the motors.
+   * @param follow The function to follow the master motor controller.
    * @param controllers The motor controllers.
    */
-  public SmartMotorControllerGroup(boolean invert, double multiplier, double accelUp, double accelDown, T... controllers) {
+  public SmartMotorControllerGroup(
+    boolean invert, double multiplier, double accelUp, double accelDown,
+    SmartMotorControllerFollower<T> follow, T... controllers
+  ) {
     T master = controllers[0];
     m_controller = new SmartMotorController(invert, multiplier, accelUp, accelDown, master);
 
@@ -32,10 +32,7 @@ public class SmartMotorControllerGroup<T extends MotorController> {
       if (controller != master) {
         controller.setInverted(invert);
 
-        if (controller instanceof IMotorController)
-          ((IMotorController) controller).follow((IMotorController) master);
-        else if (controller instanceof CANSparkBase)
-          ((CANSparkBase) controller).follow((CANSparkBase) master);
+        follow.follow(master, controller);
       }
     }
   }
@@ -47,10 +44,14 @@ public class SmartMotorControllerGroup<T extends MotorController> {
    * @param invert The direction in which the motors should spin.
    * @param accel The rate at which the motors should change speed.
    * @param multiplier The master speed multiplier of the motors.
+   * @param follow The function to follow the master motor controller.
    * @param controller The motor controllers.
    */
-  public SmartMotorControllerGroup(boolean invert, double multiplier, double accel, T... controllers) {
-    this(invert, multiplier, accel, accel, controllers);
+  public SmartMotorControllerGroup(
+    boolean invert, double multiplier, double accel,
+    SmartMotorControllerFollower<T> follow, T... controllers
+  ) {
+    this(invert, multiplier, accel, accel, follow, controllers);
   }
 
   /**
