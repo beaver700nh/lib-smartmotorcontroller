@@ -5,6 +5,6 @@
 package frc.robot.lib.SmartMotorController;
 
 /** Defines a function for a motor controller to follow another. */
-public class SmartMotorControllerFollower<T> {
-  void follow(T master, T follower) {}
+public interface SmartMotorControllerFollower<T> {
+  void follow(T master, T follower);
 }
