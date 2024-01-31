@@ -15,9 +15,9 @@ public class SmartMotorControllerGroup<T extends MotorController> {
    * Initialize the motors and their configuration.
    *
    * @param invert The direction in which the motors should spin.
+   * @param multiplier The master speed multiplier of the motors.
    * @param accelUp The rate at which the motors should get faster. 
    * @param accelDown The rate at which the motors should get slower or change direction.
-   * @param multiplier The master speed multiplier of the motors.
    * @param follow The function to follow the master motor controller.
    * @param controllers The motor controllers.
    */
@@ -42,16 +42,32 @@ public class SmartMotorControllerGroup<T extends MotorController> {
    * Assume that the acceleration rate is the same for both directions.
    *
    * @param invert The direction in which the motors should spin.
-   * @param accel The rate at which the motors should change speed.
    * @param multiplier The master speed multiplier of the motors.
+   * @param accel The rate at which the motors should change speed.
    * @param follow The function to follow the master motor controller.
-   * @param controller The motor controllers.
+   * @param controllers The motor controllers.
    */
   public SmartMotorControllerGroup(
     boolean invert, double multiplier, double accel,
     SmartMotorControllerFollower<T> follow, T... controllers
   ) {
     this(invert, multiplier, accel, accel, follow, controllers);
+  }
+
+  /**
+   * Initialize the motors and their configuration.
+   * Assume that the acceleration rate is unused and set it to zero.
+   *
+   * @param invert The direction in which the motors should spin.
+   * @param multiplier The master speed multiplier of the motors.
+   * @param follow The function to follow the master motor controller.
+   * @param controllers The motor controllers.
+   */
+  public SmartMotorControllerGroup(
+    boolean invert, double multiplier,
+    SmartMotorControllerFollower<T> follow, T... controllers
+  ) {
+    this(invert, multiplier, 0.0, follow, controllers);
   }
 
   /**
@@ -70,6 +86,6 @@ public class SmartMotorControllerGroup<T extends MotorController> {
    * @param velocity The requested velocity of the motors.
    */
   public void forceTo(double velocity) {
-    m_controller.set(velocity);
+    m_controller.forceTo(velocity);
   }
 }

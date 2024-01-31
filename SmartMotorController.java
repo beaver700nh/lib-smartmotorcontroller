@@ -30,9 +30,9 @@ public class SmartMotorController {
    * Initialize the motor and its configuration.
    *
    * @param invert The direction in which the motor should spin.
+   * @param multiplier The master speed multiplier of the motor.
    * @param accelUp The rate at which the motor should get faster. 
    * @param accelDown The rate at which the motor should get slower or change direction.
-   * @param multiplier The master speed multiplier of the motor.
    * @param controller The motor controller.
    */
   public SmartMotorController(boolean invert, double multiplier, double accelUp, double accelDown, MotorController controller) {
@@ -48,12 +48,24 @@ public class SmartMotorController {
    * Assume that the acceleration rate is the same for both directions.
    *
    * @param invert The direction in which the motor should spin.
-   * @param accel The rate at which the motor should change speed.
    * @param multiplier The master speed multiplier of the motor.
+   * @param accel The rate at which the motor should change speed.
    * @param controller The motor controller.
    */
   public SmartMotorController(boolean invert, double multiplier, double accel, MotorController controller) {
     this(invert, multiplier, accel, accel, controller);
+  }
+
+  /**
+   * Initialize the motor and its configuration.
+   * Assume that the acceleration rate is unused and set it to zero.
+   *
+   * @param invert The direction in which the motor should spin.
+   * @param multiplier The master speed multiplier of the motor.
+   * @param controller The motor controller.
+   */
+  public SmartMotorController(boolean invert, double multiplier, MotorController controller) {
+    this(invert, multiplier, 0.0, controller);
   }
 
   /**
@@ -90,8 +102,18 @@ public class SmartMotorController {
    *
    * @param velocity The requested velocity of the motor.
    */
-  public void set(double velocity) {
+  public void forceTo(double velocity) {
     m_controller.set(velocity * m_multiplier);
+  }
+
+  /**
+   * @deprecated Use forceTo instead.
+   * Alias for forceTo as backwards-compatibility.
+   * 
+   * @param velocity The requested velocity of the motor.
+   */
+  public void set(double velocity) {
+    forceTo(velocity);
   }
 
   /**
