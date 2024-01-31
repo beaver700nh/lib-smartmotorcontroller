@@ -21,6 +21,7 @@ public class SmartMotorControllerGroup<T extends MotorController> {
    * @param follow The function to follow the master motor controller.
    * @param controllers The motor controllers.
    */
+  @SuppressWarnings("unchecked")
   public SmartMotorControllerGroup(
     boolean invert, double multiplier, double accelUp, double accelDown,
     SmartMotorControllerFollower<T> follow, T... controllers
@@ -47,6 +48,7 @@ public class SmartMotorControllerGroup<T extends MotorController> {
    * @param follow The function to follow the master motor controller.
    * @param controllers The motor controllers.
    */
+  @SuppressWarnings("unchecked")
   public SmartMotorControllerGroup(
     boolean invert, double multiplier, double accel,
     SmartMotorControllerFollower<T> follow, T... controllers
@@ -63,6 +65,7 @@ public class SmartMotorControllerGroup<T extends MotorController> {
    * @param follow The function to follow the master motor controller.
    * @param controllers The motor controllers.
    */
+  @SuppressWarnings("unchecked")
   public SmartMotorControllerGroup(
     boolean invert, double multiplier,
     SmartMotorControllerFollower<T> follow, T... controllers
