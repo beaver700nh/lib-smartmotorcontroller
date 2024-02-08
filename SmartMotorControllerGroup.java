@@ -27,7 +27,7 @@ public class SmartMotorControllerGroup<T extends MotorController> extends SmartM
       if (controller != m_controller) {
         controller.setInverted(invert);
 
-        follow.follow(this, controller);
+        follow.follow(controllers[0], controller);
       }
     }
   }
