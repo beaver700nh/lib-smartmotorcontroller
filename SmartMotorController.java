@@ -9,22 +9,22 @@ public class SmartMotorController {
   /**
    * The master speed multiplier of the motor.
    */
-  private final double m_multiplier;
+  protected final double m_multiplier;
 
   /**
    * The rate at which the motor should get faster.
    */
-  private final double m_accelUp;
+  protected final double m_accelUp;
 
   /**
    * The rate at which the motor should get slower or change direction.
    */
-  private final double m_accelDown;
+  protected final double m_accelDown;
 
   /**
    * The motor controller.
    */
-  private final MotorController m_controller;
+  protected final MotorController m_controller;
 
   /**
    * Initialize the motor and its configuration.

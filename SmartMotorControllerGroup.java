@@ -5,12 +5,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 /**
  * Handles one side of a tank drive drive train.
  */
-public class SmartMotorControllerGroup<T extends MotorController> {
-  /**
-   * The master motor controller which is followed by the others.
-   */
-  private final SmartMotorController m_controller;
-
+public class SmartMotorControllerGroup<T extends MotorController> extends SmartMotorController {
   /**
    * Initialize the motors and their configuration.
    *
@@ -26,14 +21,13 @@ public class SmartMotorControllerGroup<T extends MotorController> {
     boolean invert, double multiplier, double accelUp, double accelDown,
     SmartMotorControllerFollower<T> follow, T... controllers
   ) {
-    T master = controllers[0];
-    m_controller = new SmartMotorController(invert, multiplier, accelUp, accelDown, master);
+    super(invert, multiplier, accelUp, accelDown, controllers[0]);
 
     for (T controller : controllers) {
-      if (controller != master) {
+      if (controller != m_controller) {
         controller.setInverted(invert);
 
-        follow.follow(master, controller);
+        follow.follow(this, controller);
       }
     }
   }
@@ -71,24 +65,5 @@ public class SmartMotorControllerGroup<T extends MotorController> {
     SmartMotorControllerFollower<T> follow, T... controllers
   ) {
     this(invert, multiplier, 0.0, follow, controllers);
-  }
-
-  /**
-   * Accelerate the motors towards the given velocity.
-   *
-   * @param velocity The requested velocity of the motors.
-   * @return The actual velocity of the motors.
-   */
-  public double accelTo(double velocity) {
-    return m_controller.accelTo(velocity);
-  }
-
-  /**
-   * Set the motors immediately to a given velocity.
-   *
-   * @param velocity The requested velocity of the motors.
-   */
-  public void forceTo(double velocity) {
-    m_controller.forceTo(velocity);
   }
 }
