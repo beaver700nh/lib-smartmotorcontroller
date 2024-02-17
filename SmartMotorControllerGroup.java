@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
  * Handles one side of a tank drive drive train.
  */
 public class SmartMotorControllerGroup<T extends MotorController> extends SmartMotorController {
+  T[] m_controllers;
+
   /**
    * Initialize the motors and their configuration.
    *
@@ -22,6 +24,8 @@ public class SmartMotorControllerGroup<T extends MotorController> extends SmartM
     SmartMotorControllerFollower<T> follow, T... controllers
   ) {
     super(invert, multiplier, accelUp, accelDown, controllers[0]);
+
+    m_controllers = controllers;
 
     for (T controller : controllers) {
       if (controller != m_controller) {
@@ -65,5 +69,9 @@ public class SmartMotorControllerGroup<T extends MotorController> extends SmartM
     SmartMotorControllerFollower<T> follow, T... controllers
   ) {
     this(invert, multiplier, 0.0, follow, controllers);
+  }
+
+  public MotorController[] getControllers() {
+    return m_controllers;
   }
 }
